@@ -25,12 +25,6 @@ local function forward()
   end
 end
 
--- Sprawdza paliwo (potrzebne ok. x*z ruchow + powrot)
-local needed = x * z + x + z
-if turtle.getFuelLevel() ~= "unlimited" and turtle.getFuelLevel() < needed then
-  print("Za malo paliwa! Potrzeba okolo " .. needed .. ", jest " .. turtle.getFuelLevel())
-  return
-end
 
 -- Kopiemy wezykiem: rzedy ida wzdluz osi x, kolejne rzedy przesuwaja sie w osi z
 -- Stan: czy skrecamy w prawo (true) czy w lewo (false) na koncu rzedu
