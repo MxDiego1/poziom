@@ -6,7 +6,7 @@ if not x or not z or x < 1 or z < 1 then
   print("Uzycie: dig <x> <z>")
   print("x, z = liczby calkowite >= 1")
   return
-end
+end 
 
 -- Kopie i idzie do przodu; radzi sobie ze zwirem/piaskiem i mobami
 local function forward()
