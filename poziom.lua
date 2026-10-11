@@ -1,64 +1,70 @@
--- Uzycie: kopanie <X> <Z>
-
 local args = {...}
-
 local x = tonumber(args[1])
 local z = tonumber(args[2])
 
 if not x or not z or x < 1 or z < 1
     or x % 1 ~= 0 or z % 1 ~= 0 then
-    print("Uzycie: kopanie <X> <Z>")
-    print("Przyklad: kopanie 10 10")
+    print("Uzycie: kopanie X Z")
     return
 end
 
-local function kopPrzod()
-    while turtle.detect() do
-        if not turtle.dig() then
-            print("Nie mozna wykopac bloku!")
-            return false
-        end
+local function kopDoPrzodu()
+    if turtle.detect() then
+        turtle.dig()
         sleep(0.2)
     end
 
-    while not turtle.forward() do
-        if turtle.detect() then
-            turtle.dig()
-        else
-            print("Brak miejsca lub problem z ruchem!")
-            return false
-        end
-        sleep(0.2)
+    if turtle.detect() then
+        print("Blok nie daje sie wykopac!")
+        return false
+    end
+
+    if not turtle.forward() then
+        print("Nie mozna isc do przodu.")
+        return false
     end
 
     return true
 end
 
-local function kopBok()
-    while turtle.detect() do
-        if not turtle.dig() then
-            print("Nie mozna wykopac bloku!")
-            return false
-        end
-        sleep(0.2)
+local function zmienRzad(prawo)
+    if prawo then
+        turtle.turnRight()
+    else
+        turtle.turnLeft()
     end
-    return true
+
+    local ok = kopDoPrzodu()
+
+    if prawo then
+        turtle.turnRight()
+    else
+        turtle.turnLeft()
+    end
+
+    return ok
 end
 
 for row = 1, z do
     for col = 1, x - 1 do
-        if not kopPrzod() then return end
+        if not kopDoPrzodu() then
+            print("Przerwano kopanie.")
+            return
+        end
     end
 
     if row < z then
+        local ok
+
         if row % 2 == 1 then
-            turtle.turnRight()
-            if not kopBok() then return end
-            turtle.turnRight()
+            ok = zmienRzad(true)
         else
-            turtle.turnLeft()
-            if not kopBok() then return end
-            turtle.turnLeft()
+            ok = zmienRzad(false)
+        end
+
+        if not ok then
+            print("Przerwano kopanie.")
+            return
         end
     end
 end
